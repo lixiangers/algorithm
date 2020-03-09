@@ -66,10 +66,8 @@ func method1() {
 
 	ch1 <- 0
 
-	select {
-	case <-ctx.Done():
-		fmt.Println("goroutine main end")
-	}
+	<-ctx.Done()
+	fmt.Println("goroutine main end")
 
 }
 
@@ -120,11 +118,8 @@ func method2() {
 		}
 	}(ctx)
 
-	select {
-	case <-ctx.Done():
-		fmt.Println("goroutine main end")
-	}
-
+	<-ctx.Done()
+	fmt.Println("goroutine main end")
 }
 
 // runtime.GOMAXPROCS(1)设置单核，runtime.Gosched()让出时间片
@@ -232,8 +227,6 @@ func method5() {
 		}
 	}(ctx, 0)
 
-	select {
-	case <-ctx.Done():
-		fmt.Println("goroutine main end")
-	}
+	<-ctx.Done()
+	fmt.Println("goroutine main end")
 }
