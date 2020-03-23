@@ -1,3 +1,4 @@
+//golang 实现单例的几种方式
 package main
 
 import "sync"
