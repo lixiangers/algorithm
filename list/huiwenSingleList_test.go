@@ -26,5 +26,5 @@ func TestIsHuiWenSingList(t *testing.T) {
 	singleList.PushBack("5")
 	singleList.PushBack("6")
 
-	IsHuiWenSingList(singleList)
+	IsHuiWenSingListWithReverse(singleList)
 }
