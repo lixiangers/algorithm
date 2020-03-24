@@ -1,7 +1,10 @@
 //单向链表
 package list
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type SingleList struct {
 	len  int
@@ -135,6 +138,18 @@ func (l *SingleList) Back() interface{} {
 
 		return beforeNode.value
 	}
+}
+
+func (l *SingleList) String() string {
+	builder := strings.Builder{}
+	builder.WriteString(fmt.Sprintf("len:%d\n", l.len))
+	root := l.root
+	for nil != root {
+		builder.WriteString(fmt.Sprintf("%s\n", root.value))
+		root = root.next
+	}
+
+	return builder.String()
 }
 
 type SingleListNode struct {
