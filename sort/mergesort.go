@@ -6,6 +6,9 @@ func MergeSort(array []int) {
 	mergeSort(array, 0, len(array)-1)
 }
 
+// 冒泡排序:
+// 思路: 递归执行.每次都从中间一分为二.直到只有一个元素。然后合并.
+
 func mergeSort(array []int, start int, end int) {
 	if start >= end {
 		return
