@@ -30,18 +30,22 @@ func quickSort(array []int, start int, end int) {
 // 2. i 就是分割点.j是循环指针
 // 2. 把[start,end] 分成以处理区[start ,i-1] ，未处理区[i+1,end]。i就是我们需要最终的值，分区值.
 // 3. 从未处理依次取值和pivot比较。小于pivot的值就放在已处理区的尾部，已处理区域指针+1。否则不交换。 循环一直到end-1
-func partition(array []int, start int, end int) int {
+func partition(array []int, begin int, end int) int {
+	// i是已处理区域的指针.默认是start
+	i := begin
 	pivot := array[end]
-	i := start
-	for j := start; j < end; j++ {
-		// 如果比pivot小，则放到已排序的尾部,同时已排序index+1
+
+	for j := begin; j < end; j++ {
 		if array[j] < pivot {
+			//发现比pivot小，需要把当前item移动到有序的尾部
 			array[i], array[j] = array[j], array[i]
+			//并且要后移已处理区域的指针
 			i++
 		}
 	}
 
-	// 最好把pivot移动到i的位置
+	//最后要把pivot移动到已处理区域指针位置
 	array[i], array[end] = array[end], array[i]
+
 	return i
 }
