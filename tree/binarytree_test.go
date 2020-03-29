@@ -26,17 +26,19 @@ func TestPostOrder(t *testing.T) {
 	binaryTree.postOrder()
 }
 
-func assembleBinaryTree() BinaryTree {
-	node6 := TreeNode{value: 6}
-	node7 := TreeNode{value: 7}
-	node3 := TreeNode{value: 3, left: &node6, right: &node7}
+func TestBinaryTree(t *testing.T) {
+	bst := assembleBinaryTree()
+	fmt.Println(bst)
+}
 
-	node4 := TreeNode{value: 4}
-	node5 := TreeNode{value: 5}
-	node2 := TreeNode{value: 2, left: &node4, right: &node5}
-
-	node1 := TreeNode{value: 1, left: &node2, right: &node3}
-
-	binaryTree := BinaryTree{root: &node1}
+func assembleBinaryTree() *BinaryTree {
+	binaryTree := newBinaryTree(5)
+	binaryTree.Insert(4)
+	binaryTree.Insert(2)
+	binaryTree.Insert(3)
+	binaryTree.Insert(1)
+	binaryTree.Insert(8)
+	binaryTree.Insert(7)
+	binaryTree.Insert(9)
 	return binaryTree
 }
