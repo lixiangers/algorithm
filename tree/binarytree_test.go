@@ -35,6 +35,12 @@ func TestBinaryTree(t *testing.T) {
 	fmt.Println(bst)
 }
 
+func TestBinaryTree_Invert(t *testing.T) {
+	bst := assembleBinaryTree()
+
+	bst.Invert()
+}
+
 func assembleBinaryTree() *BinaryTree {
 	binaryTree := NewBinaryTree(5)
 	binaryTree.Insert(4)

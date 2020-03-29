@@ -310,6 +310,39 @@ func postOrder(node *TreeNode) {
 }
 
 // 按层遍历
-func traverseByLayer() {
+func TraverseByLayer() {
+	//TODO
 
+}
+
+// 反转二叉树
+// 输入：
+//
+//     4
+//   /   \
+//  2     7
+// / \   / \
+//1   3 6   9
+//输出：
+//
+//     4
+//   /   \
+//  7     2
+// / \   / \
+//9   6 3   1
+func (tree *BinaryTree) Invert() {
+	if nil == tree {
+		return
+	}
+	tree.invertNode(tree.root)
+}
+
+func (tree *BinaryTree) invertNode(node *TreeNode) {
+	if nil == node {
+		return
+	}
+
+	node.left, node.right = node.right, node.left
+	tree.invertNode(node.left)
+	tree.invertNode(node.right)
 }
