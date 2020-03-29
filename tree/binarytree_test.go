@@ -41,6 +41,11 @@ func TestBinaryTree_Invert(t *testing.T) {
 	bst.Invert()
 }
 
+func TestBinaryTree_TraverseByLayer(t *testing.T) {
+	bst := assembleBinaryTree()
+	bst.TraverseByLayer()
+}
+
 func assembleBinaryTree() *BinaryTree {
 	binaryTree := NewBinaryTree(5)
 	binaryTree.Insert(4)

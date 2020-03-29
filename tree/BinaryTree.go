@@ -4,6 +4,7 @@ package tree
 import (
 	"container/list"
 	"fmt"
+	"github.com/lixiangers/algorithm/queue"
 )
 
 type TreeNode struct {
@@ -310,9 +311,25 @@ func postOrder(node *TreeNode) {
 }
 
 // 按层遍历
-func TraverseByLayer() {
-	//TODO
+func (tree *BinaryTree) TraverseByLayer() {
+	if nil == tree || nil == tree.root {
+		return
+	}
 
+	queue := queue.NewQueue()
+	queue.Enqueue(tree.root)
+
+	for queue.Len() > 0 {
+		node := queue.Dequeue().(*TreeNode)
+		fmt.Println(node.data)
+		if nil != node.left {
+			queue.Enqueue(node.left)
+		}
+
+		if nil != node.right {
+			queue.Enqueue(node.right)
+		}
+	}
 }
 
 // 反转二叉树
