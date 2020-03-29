@@ -6,24 +6,28 @@ import (
 )
 
 func TestPreOrder(t *testing.T) {
-	fmt.Println("preOrder")
+	fmt.Println("PreOrderTraversal")
 	binaryTree := assembleBinaryTree()
 
-	binaryTree.preOrder()
+	binaryTree.PreOrderTraversal()
+
+	binaryTree.PreOrderNoRecursion()
 }
 
 func TestInOrder(t *testing.T) {
 	fmt.Println("InOrder")
 	binaryTree := assembleBinaryTree()
 
-	binaryTree.inOrder()
+	binaryTree.InOrderTraversal()
+	binaryTree.InOrderTraversal()
 }
 
 func TestPostOrder(t *testing.T) {
 	fmt.Println("PostOrder")
 	binaryTree := assembleBinaryTree()
 
-	binaryTree.postOrder()
+	binaryTree.PostOrderTraversal()
+	binaryTree.PostOrderNoRecursion()
 }
 
 func TestBinaryTree(t *testing.T) {
@@ -32,7 +36,7 @@ func TestBinaryTree(t *testing.T) {
 }
 
 func assembleBinaryTree() *BinaryTree {
-	binaryTree := newBinaryTree(5)
+	binaryTree := NewBinaryTree(5)
 	binaryTree.Insert(4)
 	binaryTree.Insert(2)
 	binaryTree.Insert(3)

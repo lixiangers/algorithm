@@ -1,6 +1,10 @@
 package tree
 
-import "fmt"
+// 无递归遍历见https://blog.csdn.net/zgaoq/article/details/79089819
+import (
+	"container/list"
+	"fmt"
+)
 
 type TreeNode struct {
 	data  int
@@ -12,7 +16,7 @@ type BinaryTree struct {
 	root *TreeNode
 }
 
-func newBinaryTree(value int) *BinaryTree {
+func NewBinaryTree(value int) *BinaryTree {
 	node := new(TreeNode)
 	node.data = value
 	node.left = nil
@@ -173,20 +177,108 @@ func (t *BinaryTree) FindMin() *TreeNode {
 }
 
 // 前序打印.先先打印改节点，然后分别打印左右节点
-func (tree *BinaryTree) preOrder() {
+func (tree *BinaryTree) PreOrderTraversal() {
 	preOrder(tree.root)
 }
 
 // 中序打印.先先打印改节点的左节点，然后打印改节点,最后打印改节点的右节点
-func (tree *BinaryTree) inOrder() {
+func (tree *BinaryTree) InOrderTraversal() {
 	inOrder(tree.root)
 }
 
 // 后序打印.先打印改节点的左节点，然后打印改节点的右节点,最后打印改节点
-func (tree *BinaryTree) postOrder() {
+func (tree *BinaryTree) PostOrderTraversal() {
 	postOrder(tree.root)
 }
 
+// 前序- 不递归
+func (tree *BinaryTree) PreOrderNoRecursion() {
+	if nil == tree {
+		return
+	}
+
+	res := make([]int, 0)
+	stack := list.New()
+	node := tree.root
+	for stack.Len() > 0 || nil != node {
+
+		// 边遍历边打印，并存入栈中，以后需要借助这些根节点(不要怀疑这种说法哦)进入右子树
+		for nil != node {
+			res = append(res, node.data)
+			// 先打印当前节点
+			fmt.Println(node.data)
+
+			//　压入当前节点
+			stack.PushBack(node)
+			node = node.left
+		}
+
+		// 当p为空时，说明根和左子树都遍历完了，该进入右子树了
+		if stack.Len() > 0 {
+			element := stack.Back()
+			stack.Remove(element)
+			node = element.Value.(*TreeNode).right
+		}
+	}
+}
+
+// 中序-　不使用递归
+func (tree *BinaryTree) InOrderNoRecursion() {
+	stack := list.New()
+
+	node := tree.root
+
+	for stack.Len() > 0 || nil != node {
+
+		//一直遍历到左子树最下边，边遍历边保存根节点到栈中
+		for nil != node {
+			stack.PushBack(node)
+			node = node.left
+		}
+
+		//当node为空时，说明已经到达左子树最下边，这时需要出栈了,出站
+		if stack.Len() > 0 {
+			element := stack.Back()
+			fmt.Println(element.Value.(*TreeNode).data)
+			stack.Remove(element)
+			//进入右子树，开始新的一轮左子树遍历(这是递归的自我实现)
+			node = element.Value.(*TreeNode).right
+		}
+	}
+}
+
+// 后序遍历递归定义：先左子树，后右子树，再根节点。
+// 后序遍历的难点在于：需要判断上次访问的节点是位于左子树，还是右子树。
+// 若是位于左子树，则需跳过根节点，先进入右子树，再回头访问根节点；若是位于右子树，则直接访问根节点。
+func (tree *BinaryTree) PostOrderNoRecursion() {
+	node := tree.root
+	stack := list.New()
+
+	//point to last visit node
+	var pre *TreeNode
+
+	stack.PushBack(node)
+
+	for stack.Len() > 0 {
+		node = stack.Back().Value.(*TreeNode)
+		if (node.left == nil && node.right == nil) ||
+			(pre != nil && (pre == node.left || pre == node.right)) {
+
+			fmt.Printf("%+v ", node.data)
+			// pop
+			stack.Remove(stack.Back())
+			pre = node
+		} else {
+			if node.right != nil {
+				stack.PushBack(node.right)
+			}
+
+			if node.left != nil {
+				stack.PushBack(node.left)
+			}
+		}
+	}
+}
 func preOrder(node *TreeNode) {
 	if nil == node {
 		return
@@ -215,4 +307,9 @@ func postOrder(node *TreeNode) {
 	postOrder(node.left)
 	postOrder(node.right)
 	fmt.Println(node.data)
+}
+
+// 按层遍历
+func traverseByLayer() {
+
 }
