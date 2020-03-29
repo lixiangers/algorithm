@@ -14,11 +14,11 @@ func TestQueue(t *testing.T) {
 	queue.Enqueue(5)
 	queue.Enqueue(6)
 
-	fmt.Println(queue.len())
+	fmt.Println(queue.Len())
 	fmt.Println(queue.Dequeue())
 	fmt.Println(queue.Dequeue())
 	fmt.Println(queue.Dequeue())
 	fmt.Println(queue.Dequeue())
 
-	fmt.Println(queue.len())
+	fmt.Println(queue.Len())
 }

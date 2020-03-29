@@ -25,6 +25,6 @@ func (q *Queue) Dequeue() interface{} {
 	return element.Value
 }
 
-func (q *Queue) len() int {
+func (q *Queue) Len() int {
 	return q.list.Len()
 }
