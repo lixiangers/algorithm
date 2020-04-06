@@ -6,17 +6,17 @@ func ReverseSingleList(l *SingleList) {
 		return
 	}
 
-	root := l.root
+	node := l.root
 	var pre *SingleListNode
 	var after *SingleListNode
-	for nil != root {
-		after = root.next
-		root.next = pre
+	for nil != node {
+		after = node.next
+		node.next = pre
 
-		pre = root
-		root = after
+		pre = node
+		node = after
 	}
 
-	// root最后是nil,不能指向root,而是pre
+	// node最后是nil,不能指向root,而是pre.指向原来的最后一个
 	l.root = pre
 }

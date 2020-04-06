@@ -15,7 +15,7 @@ func cal8Queen(row int, result []int) {
 		total++
 		fmt.Printf("第%d种\n", total)
 	}
-	//每一行都有8种放法
+	//每一行都有8种放法.都回去尝试放
 	for column := 0; column < 8; column++ {
 		if isOk(row, column, result) {
 			//第row行的第column占位

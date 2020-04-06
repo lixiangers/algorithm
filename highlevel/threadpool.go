@@ -2,6 +2,7 @@ package highlevel
 
 // golang 实现线程池
 import (
+	"context"
 	"fmt"
 	"time"
 )
@@ -24,6 +25,7 @@ func (self *Pool) Init(runtineNumber int, total int) {
 
 func (self *Pool) Start() {
 	//开启 number 个goruntine
+	context.Background()
 	for i := 0; i < self.RuntineNumber; i++ {
 		go func() {
 			for {
