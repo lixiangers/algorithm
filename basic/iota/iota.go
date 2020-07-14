@@ -1,0 +1,23 @@
+package main
+
+import "fmt"
+
+type LxCode int32
+
+const (
+	LX_SVR_ERROR_START LxCode = 200 + iota*10
+
+	LX_SVR_ERROR_CENTER
+	LX_SVR_ERROR_EDGE
+	LX_SVR_ERROR_GATEWAY
+	LX_SVR_ERROR_AUTH
+	LX_SVR_ERROR_AUTH_SERVICE
+	LX_SVR_ERROR_SESSION
+	LX_SVR_ERROR_PUBLIC_SERVICE
+)
+
+func main() {
+	fmt.Println(LX_SVR_ERROR_START)
+	fmt.Println(LX_SVR_ERROR_CENTER)
+	fmt.Println(LX_SVR_ERROR_EDGE)
+}
