@@ -1,16 +1,24 @@
 package string
 
+import (
+	"fmt"
+	"unicode/utf8"
+)
+
 type AcNode struct {
 	fail      *AcNode
 	isPattern bool
 	next      map[rune]*AcNode
+	length    int
+	content   rune
 }
 
-func newAcNode() *AcNode {
+func newAcNode(c rune) *AcNode {
 	return &AcNode{
 		fail:      nil,
 		isPattern: false,
 		next:      map[rune]*AcNode{},
+		content:   c,
 	}
 }
 
@@ -20,7 +28,7 @@ type AcAutoMachine struct {
 
 func NewAcAutoMachine() *AcAutoMachine {
 	return &AcAutoMachine{
-		root: newAcNode(),
+		root: newAcNode([]rune("/")[0]),
 	}
 }
 
@@ -29,11 +37,16 @@ func (ac *AcAutoMachine) AddPattern(pattern string) {
 	iter := ac.root
 	for _, c := range chars {
 		if _, ok := iter.next[c]; !ok {
-			iter.next[c] = newAcNode()
+			iter.next[c] = newAcNode(c)
 		}
 		iter = iter.next[c]
 	}
 	iter.isPattern = true
+	iter.length = utf8.RuneCountInString(pattern)
+}
+
+func (node *AcNode) String() string {
+	return string(node.content)
 }
 
 func (ac *AcAutoMachine) Build() {
@@ -69,21 +82,40 @@ func (ac *AcAutoMachine) Build() {
 
 func (ac *AcAutoMachine) Query(content string) (results []string) {
 	chars := []rune(content)
-	iter := ac.root
-	var start, end int
+	p := ac.root
+	fmt.Printf("start:%s\n", p.String())
 	for i, c := range chars {
-		_, ok := iter.next[c]
-		for !ok && iter != ac.root {
-			iter = iter.fail
-		}
-		if _, ok = iter.next[c]; ok {
-			if iter == ac.root { // this is the first match, record the start position
-				start = i
+		fmt.Printf("loop:%s\n", string(c))
+		for {
+			_, ok := p.next[c]
+			if !ok && p != ac.root {
+				// 如果主串中的当前字符不在Tire树当前节点的children中，找到fail指针的节点
+				p = p.fail
+				//fmt.Printf("for set p is fail:%s\n",p.String())
+			} else {
+				break
 			}
-			iter = iter.next[c]
-			if iter.isPattern {
-				end = i // this is the end match, record one result
-				results = append(results, string([]rune(content)[start:end+1]))
+		}
+
+		p = p.next[c]
+		if p != nil {
+			fmt.Printf("for set p is next:%s\n", p.String())
+		}
+
+		// 如果没有匹配的，从root开始重新匹配
+		if p == nil {
+			p = ac.root
+			fmt.Printf("set p is root:%s\n", p.String())
+		} else {
+			tmp := p
+			for tmp != ac.root {
+				// 打印出可以匹配的模式串
+				if tmp.isPattern == true {
+					pos := i - tmp.length + 1
+					results = append(results, string([]rune(content)[pos:pos+tmp.length]))
+					fmt.Printf("匹配起始下标%d,长度:%d \n", pos, tmp.length)
+				}
+				tmp = tmp.fail
 			}
 		}
 	}
