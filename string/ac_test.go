@@ -1,7 +1,12 @@
 package string
 
 import (
+	"bufio"
 	"fmt"
+	"io"
+	"os"
+	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -31,7 +36,7 @@ func TestAcAutoMachine_Query(t *testing.T) {
 func BenchmarkAcAutoMatch2(b *testing.B) {
 	b.StopTimer()
 	// 加载敏感词
-	sensitiveWords := loadSensitiveWords("/home/lixiang/work/go/src/github.com/lixiangers/algorithm/data/sensitive_word_other_2.txt")
+	sensitiveWords := loadSensitiveWords("../data/sensitive_word_other_2.txt")
 	// 建树
 	//buildStartTime:=time.Now()
 	ac := NewAcAutoMachine()
@@ -47,7 +52,7 @@ func BenchmarkAcAutoMatch2(b *testing.B) {
 	//fmt.Println("setNodeFailPointTime:",time.Now().Sub(setNodeFailPointTime))
 	part := "你是抓不是的中国很好水电费加二米几十分是丹佛奇偶偶没说明佛惊个附加奥奇建安费劲阿斯顿发力看见哦按点说"
 	message := ""
-	for i := 0; i < 1; i++ {
+	for i := 0; i < 2; i++ {
 		message += part
 	}
 	//println("message len:",len(message))
@@ -65,8 +70,11 @@ func BenchmarkAcAutoMatch2(b *testing.B) {
 }
 
 func TestAcAutoMachine_Query_2(t *testing.T) {
-	// 加载敏感词
-	sensitiveWords := loadSensitiveWords("/home/lixiang/work/go/src/github.com/lixiangers/algorithm/data/sensitive_word_other_2.txt")
+	orgidNum, _ := strconv.ParseInt("", 10, 64)
+	fmt.Println("orgidNum", orgidNum)
+	//fmt.Println(string([]rune("腐败中国")[1:3]))
+	//加载敏感词
+	sensitiveWords := loadSensitiveWords("../data/sensitive_word_other_2.txt")
 	// 建树
 	//buildStartTime:=time.Now()
 	ac := NewAcAutoMachine()
@@ -74,8 +82,43 @@ func TestAcAutoMachine_Query_2(t *testing.T) {
 		ac.AddPattern(w)
 	}
 	ac.Build()
-	results := ac.Query("好水电费加二米几十喉吻玉蒲团王八")
+	results := ac.Query("你是个王八蛋嘛,fuck you")
 	for _, result := range results {
 		fmt.Println(result)
 	}
+}
+
+func loadSensitiveWords(path string) []string {
+	result := make([]string, 0)
+	filePaths := strings.Split(path, ",")
+	if len(filePaths) < 1 {
+		panic("no file")
+	}
+	for _, filePaths := range filePaths {
+		fi, err := os.Open(filePaths)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+			continue
+		}
+		defer fi.Close()
+
+		br := bufio.NewReader(fi)
+		for {
+			a, _, c := br.ReadLine()
+			if c == io.EOF {
+				break
+			}
+			//fmt.Println(string(a))
+			line := strings.ReplaceAll(string(a), " ", "")
+			line = strings.TrimSpace(line)
+			if line == "" {
+				continue
+			}
+
+			result = append(result, line)
+		}
+	}
+
+	//fmt.Println("words:",len(result))
+	return result
 }
